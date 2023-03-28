@@ -30,12 +30,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
     );
 
     controller.forward(); //controller.reverse(from: 1.0); to make animation go reversely
-    controller.addListener(() {
-      setState(() {
 
-      });
-      print(animation.value);
+    // animation.addStatusListener((status) {
+    //   if(status == AnimationStatus.completed) {
+    //     controller.reverse(from: 1.0);
+    //   } else if(status == AnimationStatus.dismissed){
+    //     controller.forward();
+    //   }
+    // });
+
+    controller.addListener(() {
+      setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
   }
 
   @override
