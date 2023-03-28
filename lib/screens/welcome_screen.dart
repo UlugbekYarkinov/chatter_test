@@ -24,20 +24,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
       duration: const Duration(seconds: 1),
     );
 
-    animation = CurvedAnimation(
-      parent: controller,
-      curve: Curves.decelerate,
-    );
+    animation = ColorTween(
+      begin: Colors.blueGrey,
+      end: Colors.white,
+    ).animate(controller);
 
     controller.forward(); //controller.reverse(from: 1.0); to make animation go reversely
-
-    // animation.addStatusListener((status) {
-    //   if(status == AnimationStatus.completed) {
-    //     controller.reverse(from: 1.0);
-    //   } else if(status == AnimationStatus.dismissed){
-    //     controller.forward();
-    //   }
-    // });
 
     controller.addListener(() {
       setState(() {});
@@ -53,7 +45,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: animation.value,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -65,7 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
                 Hero(
                   tag: 'logo',
                   child: SizedBox(
-                    height: animation.value*60,
+                    height: 60,
                     child: Image.asset('images/logo.png'),
                   ),
                 ),
