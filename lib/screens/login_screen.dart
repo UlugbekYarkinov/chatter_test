@@ -1,3 +1,4 @@
+import 'package:chatter_test/components/activation_action_button.dart';
 import 'package:flutter/material.dart';
 import 'welcome_screen.dart';
 
@@ -88,26 +89,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 24.0,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    //Implement login functionality.
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Log In',
-                  ),
-                ),
-              ),
+            ActivationActionButton(
+              color: Colors.lightBlueAccent,
+              onTap: (){},
+              label: 'Log In',
             ),
           ],
         ),
