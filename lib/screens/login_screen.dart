@@ -1,7 +1,9 @@
 import 'package:chatter_test/components/activation_action_button.dart';
 import 'package:chatter_test/constants.dart';
+import 'package:chatter_test/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'welcome_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = "login_screen";
@@ -11,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
 
@@ -68,7 +71,16 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             ActivationActionButton(
               color: Colors.lightBlueAccent,
-              onTap: (){},
+              onTap: () async {
+                try {
+                  final user = await _auth.signInWithEmailAndPassword(email: email, password: password);
+                  if(mounted) {
+                    Navigator.pushNamed(context, ChatScreen.id);
+                  }
+                } catch(e) {
+                  print(e);
+                }
+              },
               label: 'Log In',
             ),
           ],
