@@ -1,3 +1,4 @@
+import 'package:chatter_test/components/message_bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:chatter_test/constants.dart';
@@ -73,12 +74,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 }
                 //async snapshot contains query snapshot that contains list of documents
                 final documents = snapshot.data!.docs;
-                List<Text> messageWidgets = [];
+                List<MessageBubble> messageWidgets = [];
                 for(var doc in documents) {
                   messageWidgets.add(
-                    Text(
-                      '${doc['text']} from ${doc['sender']}',
-                    )
+                    MessageBubble(sender: doc['sender'], text: doc['text'])
                   );
                 }
 
