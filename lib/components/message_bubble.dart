@@ -15,6 +15,22 @@ class MessageBubble extends StatelessWidget {
   final bool isMe;
   final Timestamp time;
 
+  String getTime() {
+    int hours = time.toDate().hour;
+    int minutes = time.toDate().minute;
+    String partOfTheDay;
+
+    if(hours < 12) {
+      if(hours == 0) hours = 12;
+      partOfTheDay = 'AM';
+    } else {
+      hours -= 12;
+      if(hours == 0) hours = 12;
+      partOfTheDay = 'PM';
+    }
+    return "$hours:$minutes $partOfTheDay";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,7 +69,7 @@ class MessageBubble extends StatelessWidget {
             ),
           ),
           Text(
-            "${time.toDate()}",
+            getTime(),
             style: const TextStyle(fontSize: 12.0, color: Colors.black54),
           ),
         ],
