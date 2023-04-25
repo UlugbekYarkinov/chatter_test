@@ -76,11 +76,18 @@ class _ChatScreenState extends State<ChatScreen> {
                 List<Text> messageWidgets = [];
                 for(var doc in documents) {
                   messageWidgets.add(
-                    Text('${doc['text']} from ${doc['sender']}')
+                    Text(
+                      '${doc['text']} from ${doc['sender']}',
+                    )
                   );
                 }
 
-                return Column(children: messageWidgets,);
+                return Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+                    children: messageWidgets,
+                  ),
+                );
               },
             ),
             Container(
