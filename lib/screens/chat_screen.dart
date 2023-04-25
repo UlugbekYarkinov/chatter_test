@@ -1,4 +1,4 @@
-import 'package:chatter_test/components/message_bubble.dart';
+import 'package:chatter_test/components/messages_stream.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:chatter_test/constants.dart';
@@ -7,7 +7,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 class ChatScreen extends StatefulWidget {
   static String id = "chat_screen";
 
+  const ChatScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _ChatScreenState createState() => _ChatScreenState();
 }
 
@@ -29,18 +32,9 @@ class _ChatScreenState extends State<ChatScreen> {
       final user = _auth.currentUser;
       if(user != null) {
         loggedInUser = user;
-        print(loggedInUser.email);
       }
     } catch(e) {
-      print(e);
-    }
-  }
-
-  void messagesStream() async {
-    await for(var snapshot in _fireStore.collection('messages').snapshots()) {
-      for(var message in snapshot.docs) {
-        print(message.data());
-      }
+      rethrow;
     }
   }
 
@@ -53,9 +47,8 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
-                messagesStream();
-                // _auth.signOut();
-                // Navigator.pop(context);
+                _auth.signOut();
+                Navigator.pop(context);
               }),
         ],
         title: const Text('⚡️Chat'),
@@ -66,29 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            StreamBuilder(
-              stream: _fireStore.collection('messages').snapshots(),
-              builder: (context, snapshot) {
-                if(!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                //async snapshot contains query snapshot that contains list of documents
-                final documents = snapshot.data!.docs;
-                List<MessageBubble> messageWidgets = [];
-                for(var doc in documents) {
-                  messageWidgets.add(
-                    MessageBubble(sender: doc['sender'], text: doc['text'])
-                  );
-                }
-
-                return Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-                    children: messageWidgets,
-                  ),
-                );
-              },
-            ),
+            MessagesStream(_fireStore),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
